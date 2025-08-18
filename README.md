@@ -32,7 +32,8 @@ git clone https://github.com/Hodr25/DovahCloud.git
 cd DovahCloud
 python3 -m venv venv
 pip install -r requirements.txt
-python app.py```
+python app.py
+```
 
 ### Windows
 
@@ -41,7 +42,8 @@ python app.py```
 - Abrir PowerShell o CMD en la carpeta del proyecto
 - Ejecutar
 ```pip install -r requirements.txt
-python app.py```
+python app.py
+```
 - Asegúrate de tener ffmpeg instalado y agregado al PATH. Puedes descargarlo desde ffmpeg.org
 
 ## 📁 Configuración de rutas
@@ -51,7 +53,8 @@ Si estás en Windows, asegúrate de que las rutas estén bien configuradas en el
 
 ```import os
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud')
-PRIVATE_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud', 'Tilok')```
+PRIVATE_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud', 'Tilok')
+```
 
 ## 🧪 Ejecución
 
@@ -64,7 +67,8 @@ la ip y puerto se configuran en app.py, al final del todo, se debe poner la mism
 que tiene el equipo que dará el servicio:
 
 ```if __name__ == '__main__':
-app.run(debug=True, host='x.x.x.x', port=5000)```
+app.run(debug=True, host='x.x.x.x', port=5000)
+```
 
 ## 📚 Licencia
 
