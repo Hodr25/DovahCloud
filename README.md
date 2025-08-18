@@ -49,11 +49,11 @@ python app.py
 ## 📁 Configuración de rutas
 
 Por defecto, DovahCloud busca archivos en la carpeta uploads/DovahCloud.
-Si estás en Windows, asegúrate de que las rutas estén bien configuradas en el archivo config.py:
+Si estás en Windows, asegúrate de que las rutas estén bien configuradas en el archivo config.py (deben existir las carpetas):
 
 ```import os
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud')
-PRIVATE_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud', 'Tilok')
+PRIVATE_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud', 'Privado')
 ```
 
 ## 🧪 Ejecución
@@ -63,7 +63,7 @@ Una vez instalado, ejecuta:
 
 Y abre tu navegador en http://<ip>:5000
 
-la ip y puerto se configuran en app.py, al final del todo, se debe poner la misma ip
+La ip y puerto se configuran en app.py, al final del todo, se debe poner la misma ip
 que tiene el equipo que dará el servicio:
 
 ```if __name__ == '__main__':
