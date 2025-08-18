@@ -61,7 +61,7 @@ PRIVATE_UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads', 'DovahCloud', 'Privado
 Una vez instalado, ejecuta:
 ```python app.py```
 
-Y abre tu navegador en http://<ip>:5000
+Y abre tu navegador en http://x.x.x.x:5000
 
 La ip y puerto se configuran en app.py, al final del todo, se debe poner la misma ip
 que tiene el equipo que dará el servicio:
