@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block titulo %}Análisis de archivos multimedia{% endblock %}
+
+{% block contenido %}
+<h1>Estado de archivos multimedia</h1>
+
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Códec de vídeo</th>
+        <th>Códec de audio</th>
+        <th>¿Compatible?</th>
+    </tr>
+    {% for item in analisis %}
+    <tr>
+        <td><a href="/archivo/{{ item.archivo.id }}">{{ item.archivo.nombre }}</a></td>
+        <td>{{ item.archivo.tipo }}</td>
+        <td>{{ item.info.video_codec or '—' }}</td>
+        <td>{{ item.info.audio_codec or '—' }}</td>
+        <td>
+            {% if item.info.recomendado %}
+                ✅ Recomendado
+            {% else %}
+                ⚠️ Posible conversión necesaria
+            {% endif %}
+        </td>
+	<td>
+    	    {% if not item.info.recomendado %}
+            <a href="/convertir/{{ item.archivo.id }}">⚙️ Convertir</a>
+            {% else %}
+        	✅
+    	    {% endif %}
+	</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% if analisis|length == 0 %}
+<p>No hay archivos multimedia para analizar.</p>
+{% endif %}
+
+<a href="/">← Volver al inicio</a>
+{% endblock %}

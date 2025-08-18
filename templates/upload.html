@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block titulo %}Subir archivos{% endblock %}
+
+{% block contenido %}
+<h1>📤 Subida múltiple de archivos</h1>
+
+<form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data">
+    <label for="archivos">Selecciona archivos:</label><br>
+    <input type="file" name="archivos" multiple required><br><br>
+
+    <label>
+      <input type="checkbox" name="convertir_audio" value="1">
+      Extraer audio (MP3) de vídeos al subir
+    </label><br>
+
+    <label>
+      <input type="checkbox" name="convertir_pdf" value="1">
+      Convertir automáticamente a PDF si el formato es compatible
+    </label><br><br>
+
+    <button type="submit">Subir</button>
+</form>
+
+<p style="margin-top: 1em;">📝 Las etiquetas podrán añadirse más adelante desde la galería o la página de detalle.</p>
+{% endblock %}

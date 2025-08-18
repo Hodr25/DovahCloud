@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block titulo %}Galería de imágenes{% endblock %}
+
+{% block contenido %}
+<h1>📸 Galería de imágenes</h1>
+
+<style>
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.grid a {
+    display: block;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: #252525;
+    transition: transform 0.2s ease;
+}
+.grid a:hover {
+    transform: scale(1.05);
+}
+.grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+</style>
+
+<div class="grid">
+    {% for img in imagenes %}
+    <a href="/media/{{ img.nombre }}" target="_blank" title="{{ img.nombre }}">
+        <img src="/media/thumb_{{ img.nombre }}" alt="{{ img.nombre }}">
+    </a>
+    {% endfor %}
+</div>
+
+{% if imagenes|length == 0 %}
+<p>No hay imágenes disponibles aún.</p>
+{% endif %}
+
+<br>
+<a href="/">← Volver al inicio</a>
+{% endblock %}

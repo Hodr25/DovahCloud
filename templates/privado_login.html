@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block titulo %}Acceso privado{% endblock %}
+
+{% block contenido %}
+<h1>🔐 Acceso a zona privada</h1>
+
+<form method="POST" style="margin-top: 20px;">
+  <label for="clave"><strong>Introduce la clave:</strong></label><br>
+  <input type="password" name="clave" id="clave" required style="padding: 5px; width: 250px; margin-bottom: 15px;"><br>
+  <button type="submit">Entrar</button>
+</form>
+
+{% if error %}
+  <p style="color: red; margin-top: 10px;">❌ Clave incorrecta. Intenta de nuevo.</p>
+{% endif %}
+
+{% endblock %}

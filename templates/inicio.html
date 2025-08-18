@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block titulo %}Inicio – Drive Personal{% endblock %}
+
+{% block contenido %}
+<style>
+    body main { display: flex; font-family: sans-serif; }
+    aside { width: 250px; padding: 20px; background: #252525; }
+    section { flex: 1; padding: 20px; }
+
+    ul { list-style: none; padding: 0; }
+    li { margin: 8px 0; }
+</style>
+
+<main>
+    <aside>
+        <h3>🏷️ Etiquetas populares</h3>
+        <ul>
+            {% for etiqueta, cantidad in top_etiquetas %}
+                <li>
+                    <a href="/buscar?etiqueta={{ etiqueta.nombre }}">
+                        {{ etiqueta.nombre }} ({{ cantidad }})
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <section>
+        <h1>Bienvenido a tu Drive Personal</h1>
+
+        <form action="/buscar" method="GET">
+            <input type="text" name="q" placeholder="Buscar archivo o etiqueta..." size="40" required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        <hr>
+        <h2>Navegación rápida</h2>
+        <ul>
+            <li><a href="/upload">⬆️ Subir archivo</a></li>
+            <li><a href="/archivos">📂 Ver todos los archivos</a></li>
+            <li><a href="/galeria">🖼️ Galería de imágenes</a></li>
+            <li><a href="/videos">🎬 Galería de vídeos</a></li>
+            <li><a href="/multimedia">🧪 Estado multimedia</a></li>
+        </ul>
+    </section>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.querySelector('input[name="etiqueta"], input[name="q"]');
+    const suggestions = document.createElement('ul');
+
+    suggestions.style.position = 'absolute';
+    suggestions.style.border = '1px solid #ccc';
+    suggestions.style.padding = '5px';
+    suggestions.style.backgroundColor = '#010010';
+    suggestions.style.zIndex = '1000';
+    suggestions.style.listStyle = 'none';
+    suggestions.style.marginTop = '5px';
+    suggestions.style.maxHeight = '200px';
+    suggestions.style.overflowY = 'auto';
+    suggestions.style.width = input.offsetWidth + 'px';
+    suggestions.hidden = true;
+
+    input.parentNode.appendChild(suggestions);
+
+    input.addEventListener('input', async () => {
+        const fullQuery = input.value.trim();
+        if (!fullQuery) {
+            suggestions.hidden = true;
+            return;
+        }
+
+        // Obtener última palabra (la parcial a completar)
+        const palabras = fullQuery.split(/\s+/);
+        const ultima = palabras[palabras.length - 1];
+        const response = await fetch(`/sugerencias_etiquetas?q=${encodeURIComponent(fullQuery)}`);
+        const datos = await response.json();
+
+        suggestions.innerHTML = '';
+        if (datos.length === 0) {
+            suggestions.hidden = true;
+            return;
+        }
+
+        datos.forEach(etiqueta => {
+            const li = document.createElement('li');
+            li.textContent = `${etiqueta.nombre} (${etiqueta.cantidad})`;
+            li.style.cursor = 'pointer';
+            li.style.padding = '5px';
+
+            li.addEventListener('click', () => {
+                // Reemplazar solo la última palabra por la sugerencia
+                palabras[palabras.length - 1] = etiqueta.nombre;
+                input.value = palabras.join(' ') + ' ';
+                suggestions.hidden = true;
+                input.focus();
+            });
+
+            suggestions.appendChild(li);
+        });
+
+        const rect = input.getBoundingClientRect();
+        suggestions.style.top = input.offsetTop + input.offsetHeight + 'px';
+        suggestions.style.left = input.offsetLeft + 'px';
+        suggestions.style.width = input.offsetWidth + 'px';
+        suggestions.hidden = false;
+    });
+
+    document.addEventListener('click', e => {
+        if (!suggestions.contains(e.target) && e.target !== input) {
+            suggestions.hidden = true;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block titulo %}Zona Privada{% endblock %}
+
+{% block contenido %}
+<h1>🕶️ Bienvenido a la Zona Privada</h1>
+
+<p>Has accedido a un área restringida de DovahCloud. Desde aquí puedes:</p>
+
+<ul>
+  <li><a href="{{ url_for('ver_archivos_privados') }}">📂 Ver archivos privados</a></li>
+  <li><a href="{{ url_for('upload_privado') }}">📤 Subir nuevo archivo privado</a></li>
+</ul>
+
+<p style="color: #777; margin-top: 2em;"><em>Zona visible solo para usuarios con acceso especial.</em></p>
+{% endblock %}

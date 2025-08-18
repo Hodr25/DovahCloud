@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block titulo %}Papelera de reciclaje{% endblock %}
+
+{% block contenido %}
+<h1>🗑️ Papelera de archivos</h1>
+
+{% if archivos %}
+  <table style="width: 100%; border-collapse: collapse; margin-top: 1em;">
+    <thead>
+      <tr style="background-color: #f5f5f5;">
+        <th>Archivo</th>
+        <th>Tamaño</th>
+        <th>Eliminado el</th>
+        <th>Días restantes</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for archivo in archivos %}
+        {% set dias_restantes = 5 - (ahora - archivo.fecha_eliminado).days %}
+        <tr style="border-bottom: 1px solid #ddd;">
+          <td>{{ archivo.nombre }}</td>
+          <td>{{ archivo.tamaño }} bytes</td>
+          <td>{{ archivo.fecha_eliminado.strftime('%Y-%m-%d') }}</td>
+          <td>
+            {% if dias_restantes > 0 %}
+              ⏳ {{ dias_restantes }} días
+            {% else %}
+              💀 Expira hoy
+            {% endif %}
+          </td>
+          <td>
+            <form action="{{ url_for('restaurar_archivo', id=archivo.id) }}" method="POST" style="display: inline;">
+              <button type="submit">♻️ Restaurar</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No hay archivos en la papelera.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titulo %}Mis playlists{% endblock %}
+
+{% block contenido %}
+<h1>🎵 Mis playlists</h1>
+
+<form action="{{ url_for('crear_playlist') }}" method="POST" style="margin-bottom: 20px;">
+  <label for="nombre">➕ Crear nueva:</label>
+  <input type="text" name="nombre" id="nombre" required>
+  <button type="submit">Crear</button>
+</form>
+
+{% if playlists %}
+  <table border="1" cellpadding="8" width="100%">
+    <tr>
+      <th>Nombre</th>
+      <th>Archivos</th>
+      <th>Acciones</th>
+    </tr>
+
+    {% for pl in playlists %}
+    <tr>
+      <td>{{ pl.nombre }}</td>
+      <td>{{ pl.archivos | length }}</td>
+      <td>
+        <a href="{{ url_for('ver_playlist', id=pl.id) }}">👁️ Ver</a> |
+        <a href="{{ url_for('editar_playlist', id=pl.id) }}">✏️ Editar</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>📭 Aún no has creado ninguna playlist.</p>
+{% endif %}
+
+<a href="{{ url_for('ver_archivos') }}">← Volver a archivos</a>
+{% endblock %}

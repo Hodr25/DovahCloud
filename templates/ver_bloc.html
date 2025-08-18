@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}{{ bloc.titulo }}{% endblock %}
+
+{% block contenido %}
+<h1>📒 {{ bloc.titulo }}</h1>
+
+<p>
+  <strong>Autor:</strong> {{ bloc.autor.usuario_nombre }} |
+  <strong>Última edición:</strong> {{ bloc.fecha_actualizado.strftime('%d-%m-%Y') }}
+</p>
+
+{% if bloc.publico %}<p>🌍 Bloc público</p>
+{% elif bloc.privado %}<p>🔒 Solo visible para ti</p>
+{% else %}<p>👥 Compartido con usuarios específicos</p>
+{% endif %}
+
+<hr>
+<pre style="white-space: pre-wrap;">{{ bloc.contenido }}</pre>
+
+<hr>
+{% if bloc.autor_id == session.get('usuario_id') %}
+  <p>
+    <a href="{{ url_for('editar_bloc', id=bloc.id) }}">✏️ Editar</a> |
+    <a href="{{ url_for('compartir_bloc', id=bloc.id) }}">🤝 Compartir</a> |
+    <form action="{{ url_for('eliminar_bloc', id=bloc.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Eliminar este bloc?')">
+      <button type="submit" style="color:red; border:none; background:none;">🗑️ Eliminar</button>
+    </form>
+  </p>
+{% endif %}
+
+<a href="{{ url_for('mis_blocs') }}">← Volver a mis blocs</a>
+{% endblock %}

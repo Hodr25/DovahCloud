@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Panel de administración{% endblock %}
+
+{% block contenido %}
+<h1>🧭 Panel de Administración</h1>
+
+<table border="1" cellpadding="6" style="margin-top:1em;">
+  <tr style="background-color:#101010;">
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Privado</th>
+    <th>Admin</th>
+    <th>Archivos</th>
+    <th>Acciones</th>
+  </tr>
+  {% for user in usuarios %}
+    <tr>
+      <td>{{ user.id }}</td>
+      <td>{{ user.nombre }}</td>
+      <td>{{ "✅" if user.acceso_privado else "❌" }}</td>
+      <td>{{ "👑" if user.es_admin else "—" }}</td>
+      <td>{{ user.archivos|length }}</td>
+      <td>
+        <a href="{{ url_for('editar_usuario', id=user.id) }}">✏️ Editar</a>
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

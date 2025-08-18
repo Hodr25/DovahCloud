@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+  <h2>Compartir bloc: "{{ bloc.titulo }}"</h2>
+
+  <form method="post">
+    <fieldset>
+      <legend>Selecciona los usuarios con los que compartir:</legend>
+      {% if usuarios %}
+        {% for usuario in usuarios %}
+          <label>
+            <input type="checkbox" name="invitados" value="{{ usuario.id }}">
+            {{ usuario.nombre }}
+          </label><br>
+        {% endfor %}
+      {% else %}
+        <p class="texto-suave">No hay otros usuarios disponibles para compartir este bloc.</p>
+      {% endif %}
+    </fieldset>
+
+    <br>
+    <button type="submit">Compartir</button>
+    <a href="{{ url_for('ver_bloc', id=bloc.id) }}" class="boton-secundario">← Volver al bloc</a>
+  </form>
+{% endblock %}

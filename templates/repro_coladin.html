@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}▶️ Reproduciendo desde cola{% endblock %}
+
+{% block contenido %}
+<h1>▶️ Reproduciendo archivo {{ pos + 1 }} de {{ total }}</h1>
+
+{% if archivo %}
+  <h2>{{ archivo.nombre }}</h2>
+  <p><strong>Tipo:</strong> {{ archivo.tipo }} | <strong>Tamaño:</strong> {{ archivo.tamaño | filesizeformat }}</p>
+
+  {% if archivo.tipo.startswith('audio/') %}
+    <audio controls autoplay style="width: 100%; max-width: 600px;">
+      <source src="/media/{{ archivo.nombre }}" type="{{ archivo.tipo }}">
+      Tu navegador no soporta la reproducción de audio.
+    </audio>
+  {% elif archivo.tipo.startswith('video/') %}
+    <video controls autoplay width="640" height="360">
+      <source src="/media/{{ archivo.nombre }}" type="{{ archivo.tipo }}">
+      Tu navegador no soporta la reproducción de video.
+    </video>
+  {% else %}
+    <p>Este tipo de archivo no se puede reproducir directamente.</p>
+  {% endif %}
+
+  <div style="margin-top: 20px;">
+    {% if pos > 0 %}
+      <a href="{{ url_for('reproducir_desde_cola', pos=pos - 1) }}">⏮️ Anterior</a>
+    {% endif %}
+
+    {% if pos + 1 < total %}
+      <a href="{{ url_for('reproducir_desde_cola', pos=pos + 1) }}">⏭️ Siguiente</a>
+    {% endif %}
+
+    | <a href="{{ url_for('ver_cola') }}">📥 Ver cola</a>
+  </div>
+{% else %}
+  <p>⚠️ No se encontró el archivo solicitado.</p>
+{% endif %}
+{% endblock %}

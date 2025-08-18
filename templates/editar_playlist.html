@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Editar playlist{% endblock %}
+
+{% block contenido %}
+<h1>🛠️ Editar playlist</h1>
+
+<form method="POST">
+  <label for="nombre">Nuevo nombre:</label>
+  <input type="text" name="nombre" id="nombre" value="{{ playlist.nombre }}" required>
+  <button type="submit">💾 Guardar cambios</button>
+</form>
+
+<hr>
+
+<form method="POST" onsubmit="return confirm('¿Seguro que quieres eliminar esta playlist?')">
+  <input type="hidden" name="eliminar" value="1">
+  <button type="submit" style="color: red;">🗑️ Eliminar playlist</button>
+</form>
+
+<a href="{{ url_for('ver_playlist', id=playlist.id) }}">← Volver a la playlist</a>
+{% endblock %}

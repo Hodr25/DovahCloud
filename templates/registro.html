@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Registro de usuario{% endblock %}
+
+{% block contenido %}
+<h1>👤 Crear nuevo usuario</h1>
+
+<form method="POST">
+  <label for="nombre">Nombre de usuario:</label><br>
+  <input type="text" name="nombre" required><br><br>
+
+  <label for="contraseña">Contraseña:</label><br>
+  <input type="password" name="contraseña" required><br><br>
+
+  <label for="avatar">Selecciona un avatar:</label><br>
+  <select name="avatar">
+    <option value="default_avatar.png">🐉 Default</option>
+    <option value="dragon.png">🔥 Dragón</option>
+    <option value="hielo.png">❄️ Hielo</option>
+    <option value="sombra.png">🌑 Sombra</option>
+  </select><br><br>
+
+  <label>
+    <input type="checkbox" name="acceso_privado" value="1">
+    Conceder acceso a zona privada
+  </label><br><br>
+
+  <button type="submit">🪄 Crear cuenta</button>
+</form>
+{% endblock %}

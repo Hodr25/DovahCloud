@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block titulo %}Descargar desde YouTube{% endblock %}
+
+{% block contenido %}
+<h1>📥 Descargar video o audio de YouTube</h1>
+
+<form method="POST">
+  <label>🔗 URL del video:</label><br>
+  <input name="url" type="url" placeholder="https://www.youtube.com/watch?v=..." required style="width: 100%;"><br><br>
+
+  <label>🎛️ Formato:</label><br>
+  <select name="formato">
+    <option value="audio">🎵 MP3 (solo audio)</option>
+    <option value="video">🎥 MP4 (video)</option>
+  </select><br><br>
+
+  <label>☁️ Acción:</label><br>
+  <select name="accion">
+    <option value="descargar">⬇️ Solo descargar</option>
+    <option value="subir">⬆️ Descargar y subir a DovahCloud</option>
+  </select><br><br>
+
+  <button type="submit">Procesar</button>
+</form>
+{% endblock %}

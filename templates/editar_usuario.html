@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar usuario: {{ usuario.nombre }}{% endblock %}
+
+{% block contenido %}
+<h1>✏️ Editar usuario</h1>
+
+<form method="POST">
+  <p><strong>Usuario:</strong> {{ usuario.nombre }}</p>
+
+  <label>
+    <input type="checkbox" name="acceso_privado" {% if usuario.acceso_privado %}checked{% endif %}>
+    Acceso a zona privada
+  </label><br>
+
+  {% if session['usuario_id'] != usuario.id %}
+    <label>
+      <input type="checkbox" name="es_admin" {% if usuario.es_admin %}checked{% endif %}>
+      Acceso de administrador
+    </label><br>
+  {% endif %}
+
+  <hr>
+  <label for="nueva_contraseña">Nueva contraseña (opcional):</label><br>
+  <input type="password" name="nueva_contraseña" id="nueva_contraseña"><br><br>
+
+  <button type="submit">💾 Guardar cambios</button>
+  <a href="{{ url_for('panel_admin') }}">Cancelar</a>
+</form>
+{% endblock %}

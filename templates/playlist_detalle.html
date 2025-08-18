@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block titulo %}🎵 Playlist: {{ playlist.nombre }}{% endblock %}
+
+{% block contenido %}
+<h1>🎵 Playlist: {{ playlist.nombre }}</h1>
+
+{% if playlist.archivos %}
+  <table border="1" cellpadding="8">
+    <tr>
+      <th>Vista</th>
+      <th>Nombre</th>
+      <th>Tamaño</th>
+      <th>Tipo</th>
+      <th>Etiquetas</th>
+      <th>Opciones</th>
+    </tr>
+
+    {% for archivo in playlist.archivos %}
+    <tr>
+      <td>
+        {% if archivo.tipo.startswith('image/') %}
+          <a href="{{ url_for('detalle_archivo', id=archivo.id) }}">
+            <img src="/media/thumb_{{ archivo.nombre }}" alt="Miniatura" style="max-width: 100px;">
+          </a>
+        {% elif archivo.tipo.startswith('audio/') %}
+          <img src="{{ url_for('static', filename='icons/audio.png') }}" width="64" alt="Audio">
+        {% elif archivo.tipo.startswith('application/pdf') %}
+          <a href="{{ url_for('detalle_archivo', id=archivo.id) }}">
+            <img src="/media/thumb_{{ archivo.nombre }}" alt="PDF" style="max-width: 100px;">
+          </a>
+        {% elif archivo.tipo.startswith('video/') %}
+          <img src="{{ url_for('debug_thumb', filename='thumb_' + archivo.nombre + '.jpg') }}" style="max-width: 100px;" alt="Video">
+        {% else %}
+          <img src="{{ url_for('static', filename='icons/file.png') }}" width="64" alt="Archivo">
+        {% endif %}
+      </td>
+
+      <td><a href="{{ url_for('detalle_archivo', id=archivo.id) }}">{{ archivo.nombre }}</a></td>
+      <td>{{ archivo.tamaño | filesizeformat }}</td>
+      <td>{{ archivo.tipo }}</td>
+      <td>
+        {% for etiqueta in archivo.etiquetas %}
+          <span>{{ etiqueta.nombre }}</span>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+      <td>
+        <a href="{{ url_for('descargar', id=archivo.id) }}">⬇️ Descargar</a>
+        <form action="{{ url_for('quitar_de_playlist', playlist_id=playlist.id, archivo_id=archivo.id) }}" method="POST" style="display:inline;">
+          <button type="submit" onclick="return confirm('¿Quitar de la playlist?')" title="Quitar de playlist" style="border:none; background:none; color:red; font-weight:bold;">🗑️</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>Esta playlist aún no tiene archivos añadidos.</p>
+{% endif %}
+
+<a href="{{ url_for('mi_playlist') }}">← Volver a mis playlists</a>
+{% endblock %}

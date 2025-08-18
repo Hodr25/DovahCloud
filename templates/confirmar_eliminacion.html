@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar archivo</title>
+</head>
+<body>
+    <h1>¿Seguro que quieres eliminar este archivo?</h1>
+
+    <p><strong>Nombre:</strong> {{ archivo.nombre }}</p>
+    <p><strong>Tamaño:</strong> {{ archivo.tamaño }} bytes</p>
+
+    <form method="POST">
+        <button type="submit" style="color: red;">Sí, eliminar</button>
+        <a href="/archivo/{{ archivo.id }}">Cancelar</a>
+    </form>
+</body>
+</html>

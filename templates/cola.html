@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}📥 Cola de reproducción{% endblock %}
+
+{% block contenido %}
+<h1>📥 Cola de reproducción</h1>
+
+{% if cola %}
+  <table border="1" cellpadding="8">
+    <tr>
+      <th>Vista previa</th>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
+    </tr>
+
+    {% for archivo in cola %}
+    <tr>
+      <td>
+        {% if archivo.tipo.startswith('image/') %}
+          <img src="/media/thumb_{{ archivo.nombre }}" alt="Miniatura" style="max-width: 100px;">
+        {% elif archivo.tipo.startswith('audio/') %}
+          <img src="{{ url_for('static', filename='icons/audio.png') }}" width="64" alt="Audio">
+        {% elif archivo.tipo.startswith('video/') %}
+          <img src="{{ url_for('debug_thumb', filename='thumb_' + archivo.nombre + '.jpg') }}" style="max-width: 100px;" alt="Video">
+        {% else %}
+          <img src="{{ url_for('static', filename='icons/file.png') }}" width="64" alt="Archivo">
+        {% endif %}
+      </td>
+      <td>{{ archivo.nombre }}</td>
+      <td>{{ archivo.tipo }}</td>
+      <td>
+        <a href="{{ url_for('reproducir_desde_cola', pos=loop.index0) }}">▶️ Reproducir</a>
+        <form action="{{ url_for('quitar_de_cola', archivo_id=archivo.id) }}" method="POST" style="display:inline;">
+          <button type="submit" style="border:none; background:none; color:red;">🗑️ Quitar</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form action="{{ url_for('vaciar_cola') }}" method="POST" onsubmit="return confirm('¿Vaciar cola de reproducción?')" style="margin-top: 20px;">
+    <button type="submit" style="color: red;">🧹 Vaciar cola</button>
+  </form>
+{% else %}
+  <p>📭 La cola de reproducción está vacía.</p>
+{% endif %}
+
+<a href="{{ url_for('ver_archivos') }}">← Volver a archivos</a>
+{% endblock %}

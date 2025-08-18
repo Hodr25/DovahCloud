@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block titulo %}Mis blocs de notas{% endblock %}
+
+{% block contenido %}
+<h1>📚 Mis blocs de notas</h1>
+
+<p><a href="{{ url_for('crear_bloc') }}">📝 Crear nuevo bloc</a></p>
+
+{% if propios %}
+  <h2>🧑‍💼 Propios</h2>
+  <ul>
+    {% for bloc in propios %}
+      <li>
+        <a href="{{ url_for('ver_bloc', id=bloc.id) }}">{{ bloc.titulo }}</a>
+        {% if bloc.publico %}🌍{% elif bloc.privado %}🔒{% else %}👥{% endif %}
+        <small>(actualizado {{ bloc.fecha_actualizado.strftime('%d-%m-%Y') }})</small>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No has creado ningún bloc aún.</p>
+{% endif %}
+
+{% if compartidos %}
+  <h2>🤝 Compartidos contigo</h2>
+  <ul>
+    {% for bloc in compartidos %}
+      <li>
+        <a href="{{ url_for('ver_bloc', id=bloc.id) }}">{{ bloc.titulo }}</a>
+        <small>(autor: {{ bloc.autor.usuario_nombre }})</small>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<a href="{{ url_for('ver_archivos') }}">← Volver al inicio</a>
+{% endblock %}

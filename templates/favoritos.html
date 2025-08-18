@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block titulo %}⭐ Favoritos{% endblock %}
+
+{% block contenido %}
+<h1>⭐ Tus archivos favoritos</h1>
+
+{% if archivos %}
+  <div class="galeria">
+    {% for archivo in archivos %}
+      <div class="tarjeta">
+        <a href="/archivo/{{ archivo.id }}">
+          {% if archivo.tipo.startswith('image/') %}
+            <img src="/media/thumb_{{ archivo.nombre }}">
+          {% else %}
+            <img src="/static/img/file-icon.png">
+          {% endif %}
+        </a>
+        <small>{{ archivo.tipo }} – {{ archivo.tamaño }} bytes</small>
+        <form action="{{ url_for('toggle_favorito', archivo_id=archivo.id) }}" method="POST">
+          <button type="submit">❌ Quitar</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No tienes archivos favoritos aún.</p>
+{% endif %}
+{% endblock %}

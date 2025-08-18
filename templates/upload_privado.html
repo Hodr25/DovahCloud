@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Subir a zona privada{% endblock %}
+
+{% block contenido %}
+<h1>🔐 Subida de archivo privada</h1>
+
+{% with mensajes = get_flashed_messages() %}
+  {% if mensajes %}
+    <ul class="flashes">
+      {% for mensaje in mensajes %}
+        <li style="color: green;">{{ mensaje }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<form method="POST" enctype="multipart/form-data" style="margin-top: 20px;">
+  <label for="archivo"><strong>Archivo:</strong></label><br>
+  <input type="file" name="archivos" id="archivo" multiple required style="margin-bottom: 15px;"><br>
+
+  <label for="etiqueta"><strong>Etiquetas (separadas por coma):</strong></label><br>
+  <input type="text" name="etiqueta" id="etiqueta" placeholder="ej: confidencial, personal" style="width: 400px; padding: 5px;"><br><br>
+
+  <label>
+    <input type="checkbox" name="privada"> Marcar etiquetas como privadas
+  </label><br><br>
+
+  <button type="submit" style="padding: 8px 15px;">Subir a zona privada</button>
+</form>
+
+<br>
+<a href="{{ url_for('ver_archivos_privados') }}">← Volver a archivos privados</a>
+{% endblock %}

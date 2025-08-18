@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block titulo %}Filtrar archivos privados{% endblock %}
+
+{% block contenido %}
+<h1>🔐 Archivos privados filtrados</h1>
+
+<form action="/filtrar_privado" method="GET" style="margin-bottom: 20px;">
+  <input type="text" name="etiqueta" value="{{ etiqueta_buscada or '' }}" placeholder="ej: factura -borrador .jpg" required>
+  <select name="orden">
+    <option value="">Orden por defecto</option>
+    <option value="recientes" {% if request.args.get('orden') == 'recientes' %}selected{% endif %}>Más recientes</option>
+    <option value="antiguos" {% if request.args.get('orden') == 'antiguos' %}selected{% endif %}>Más antiguos</option>
+    <option value="peso_desc" {% if request.args.get('orden') == 'peso_desc' %}selected{% endif %}>Más pesados</option>
+    <option value="peso_asc" {% if request.args.get('orden') == 'peso_asc' %}selected{% endif %}>Menos pesados</option>
+    <option value="tipo" {% if request.args.get('orden') == 'tipo' %}selected{% endif %}>Tipo de archivo</option>
+  </select>
+  <button type="submit">Filtrar</button>
+</form>
+
+{% if archivos %}
+  <style>
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .tarjeta {
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.05);
+    }
+    .tarjeta img {
+      max-width: 100%;
+      max-height: 120px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+    .tarjeta a {
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .tarjeta small {
+      display: block;
+      color: #666;
+      font-size: 0.85em;
+    }
+  </style>
+
+  <div class="galeria">
+    {% for archivo in archivos %}
+      <div class="tarjeta">
+        {% if archivo.tipo.startswith('image/') %}
+          <a href="/archivo/{{ archivo.id }}"><img src="/media/thumb_{{ archivo.nombre }}.jpg" alt="Miniatura"></a>
+        {% else %}
+          <a href="/archivo/{{ archivo.id }}"><img src="/static/img/file-icon.png" alt="Archivo"></a>
+        {% endif %}
+        <small>{{ archivo.tipo }}</small>
+        <small>{{ archivo.tamaño }} bytes</small>
+        <small>📅 {{ archivo.fecha_subida.strftime('%Y-%m-%d %H:%M') }}</small>
+        <a href="/descargar/{{ archivo.id }}">Descargar</a>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No se encontraron archivos con ese filtro.</p>
+{% endif %}
+
+<br>
+<a href="/privado">← Volver a zona privada</a>
+{% endblock %}

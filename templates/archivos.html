@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block titulo %}Listado de archivos{% endblock %}
+
+{% block contenido %}
+<h1>📂 Archivos subidos</h1>
+
+<form method="GET" style="margin-bottom: 20px;">
+  <label for="orden">Ordenar por:</label>
+  <select name="orden" id="orden" onchange="this.form.submit()">
+    <option value="">-- Seleccionar --</option>
+    <option value="recientes">Más recientes</option>
+    <option value="antiguos">Más antiguos</option>
+    <option value="peso_desc">Más pesados</option>
+    <option value="peso_asc">Más ligeros</option>
+    <option value="tipo">Tipo de archivo</option>
+  </select>
+</form>
+
+<table border="1" cellpadding="8">
+  <tr>
+    <th>Vista</th>
+    <th>Nombre</th>
+    <th>Tamaño</th>
+    <th>Tipo</th>
+    <th>Etiquetas</th>
+    <th>Opciones</th>
+  </tr>
+
+  {% for archivo in archivos if usuario_puede_ver(archivo) %}
+  <tr>
+    <td>
+      {% if archivo.tipo.startswith('image/') %}
+        <a href="/archivo/{{ archivo.id }}">
+          <img src="/media/thumb_{{ archivo.nombre }}" alt="Miniatura" style="max-width: 100px;">
+        </a>
+      {% elif archivo.tipo.startswith('audio/') %}
+        <img src="{{ url_for('static', filename='icons/audio.png') }}" width="64" alt="Audio">
+      {% elif archivo.tipo.startswith('application/pdf') %}
+        <a href="/archivo/{{ archivo.id }}">
+          <img src="/media/thumb_{{ archivo.nombre }}" alt="Miniatura" style="max-width: 100px;">
+        </a>
+      {% elif archivo.tipo.startswith('video/') %}
+        <a href="/archivo/{{ archivo.id }}">
+          <img src="{{ url_for('debug_thumb', filename='thumb_' + archivo.nombre + '.jpg') }}" alt="Miniatura" style="max-width: 100px;">
+        </a>
+      {% else %}
+        <img src="{{ url_for('static', filename='icons/file.png') }}" width="64" alt="Archivo">
+      {% endif %}
+    </td>
+
+    <td>
+      <a href="{{ url_for('detalle_archivo', id=archivo.id) }}">{{ archivo.nombre }}</a>
+      {% if archivo.id in favoritos_ids %}
+        <form action="{{ url_for('toggle_favorito', archivo_id=archivo.id) }}" method="POST" style="display:inline;">
+          <button type="submit" title="Quitar de favoritos" style="border:none; background:none; color:gold; font-size:1.4em;">★</button>
+        </form>
+      {% else %}
+        <form action="{{ url_for('toggle_favorito', archivo_id=archivo.id) }}" method="POST" style="display:inline;">
+          <button type="submit" title="Añadir a favoritos" style="border:none; background:none; color:#999; font-size:1.4em;">☆</button>
+        </form>
+      {% endif %}
+    </td>
+
+    <td>{{ archivo.tamaño | filesizeformat }}</td>
+    <td>{{ archivo.tipo }}</td>
+    <td>
+      {% for etiqueta in archivo.etiquetas %}
+        <a href="/buscar?etiqueta={{ etiqueta.nombre }}">{{ etiqueta.nombre }}</a>{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    </td>
+    <td>
+      <a href="/descargar/{{ archivo.id }}">⬇️ Descargar</a> |
+      <a href="/editar/{{ archivo.id }}">✏️ Editar</a>
+      {% if playlists_usuario %}
+        <p style="margin: 5px 0;">Playlist:</p>
+        <form action="{{ url_for('añadir_a_playlist') }}" method="POST" style="display:inline;">
+          <input type="hidden" name="archivo_id" value="{{ archivo.id }}">
+          <select name="playlist_id" onchange="this.form.submit()">
+            <option value="">➕ Añadir a...</option>
+            {% for pl in playlists_usuario %}
+              <option value="{{ pl.id }}">{{ pl.nombre }}</option>
+            {% endfor %}
+          </select>
+        </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% if archivos|length == 0 %}
+  <p>No hay archivos subidos aún.</p>
+{% endif %}
+{% endblock %}

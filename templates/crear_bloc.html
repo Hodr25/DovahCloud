@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}Nuevo bloc de notas{% endblock %}
+
+{% block contenido %}
+<h1>📝 Crear nuevo bloc</h1>
+
+<form method="post" action="{{ url_for('editar_bloc', id=bloc.id) if modo_edicion else url_for('crear_bloc') }}">
+    <label for="titulo">Título:</label><br><br>
+    <input type="text" name="titulo" value="{{ bloc.titulo if modo_edicion else '' }}"><br><br>
+    <label for="contenido">Contenido:</label><br><br>
+    <textarea name="contenido" id="contenido" rows="10" cols="60">{{ bloc.contenido if modo_edicion else '' }}</textarea><br><br>
+    <label><input type="checkbox" name="privado" id="privado" {% if modo_edicion and bloc.privado %}checked{% endif %}> Solo yo puedo verlo</label><br><br>
+    <label><input type="checkbox" name="publico" id="publico" {% if modo_edicion and bloc.publico %}checked{% endif %}> Disponible Públicamente</label><br><br>
+    <button type="submit">{{ "Guardar cambios" if modo_edicion else "Crear bloc" }}</button>
+</form>
+
+<a href="{{ url_for('mis_blocs') }}">← Volver a mis blocs</a>
+{% endblock %}

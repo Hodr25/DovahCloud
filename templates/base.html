@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>{% block titulo %}DovahCloud{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+</head>
+<body>
+
+<header style="border-bottom: 1px solid #ddd; padding: 10px;">
+      <a href="{{ url_for('inicio') }}" class="logo-link">
+      <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Logo DovahCloud" style="width: 150px">
+        DovahCloud
+      </a>
+    
+    {% if session.get('usuario_id') %}
+        <div style="display: flex; align-items: center; gap: 1em;">
+            <img src="{{ url_for('static', filename='avatars/' ~ session['avatar']) }}" width="40" style="border-radius: 50%; border: 1px solid #aaa;">
+            <span>👋 Hola, {{ session['usuario_nombre'] }}</span>
+            <a href="{{ url_for('logout') }}">🚪 Salir</a>
+        </div>
+    {% else %}
+        <div>
+            <a href="{{ url_for('login') }}">🔐 Iniciar sesión</a> |
+            <a href="{{ url_for('registro') }}">📝 Registro</a>
+        </div>
+    {% endif %}
+</header>
+
+<nav style="padding: 10px; background-color: #444444; border-bottom: 1px solid #ccc;">
+  <a href="{{ url_for('ver_archivos') }}">📁 Archivos</a> |
+  <a href="/galeria">🖼️ Galería de imágenes</a> |
+  <a href="/videos">🎬 Galería de vídeos</a> |
+  <a href="/multimedia">🧪 Estado multimedia</a>
+
+  {% if session.get('usuario_id') %}
+    | <a href="{{ url_for('upload') }}">⬆️ Subir</a>
+    | <a href="{{ url_for('ver_favoritos') }}">⭐ Favoritos</a>
+    | <a href="{{ url_for('papelera') }}">🗑️ Papelera</a>
+    | <a href="{{ url_for('descargar_youtube') }}">📥 YouTube</a>
+    | <a href="{{ url_for('ver_cola') }}">📥 Cola{% if cantidad_cola > 0 %} ({{ cantidad_cola }}){% endif %}</a>
+
+    {% if session.get('acceso_privado') %}
+      | <a href="{{ url_for('zona_privada') }}">🔒 Zona Privada</a>
+    {% endif %}
+
+    {% if session.get('es_admin') %}
+      | <a href="{{ url_for('panel_admin') }}">👑 Admin</a>
+    {% endif %}
+
+    | <a href="{{ url_for('logout') }}">⏏️ Salir</a>
+  {% else %}
+    | <a href="{{ url_for('login') }}">🔑 Iniciar sesión</a>
+    | <a href="{{ url_for('registro') }}">📝 Registro</a>
+  {% endif %}
+</nav>
+
+
+<main style="padding: 20px;">
+    {% with mensajes = get_flashed_messages() %}
+        {% if mensajes %}
+            <ul style="color: darkgreen;">
+                {% for mensaje in mensajes %}
+                    <li>{{ mensaje }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    
+    {% block contenido %}{% endblock %}
+</main>
+
+<footer style="text-align: center; color: #888; font-size: 0.9em; padding: 10px;">
+    <p>DovahCloud 🐲 — Proyecto local de gestión de archivos</p>
+</footer>
+
+</body>
+</html>

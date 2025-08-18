@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block titulo %}Editar etiquetas{% endblock %}
+
+{% block contenido %}
+<h1>✏️ Editar etiquetas del archivo: <em>{{ archivo.nombre }}</em></h1>
+
+<form method="POST">
+    <h3>🏷️ Etiquetas actuales</h3>
+    <ul style="list-style: none; padding-left: 0;">
+    {% for etiqueta in archivo.etiquetas %}
+        <li style="margin-bottom: 10px;">
+	    <input type="text" name="editar_{{ etiqueta.id }}" value="{{ etiqueta.nombre }}" style="padding: 5px;">
+            <label style="margin-left: 10px;">
+                <input type="checkbox" name="eliminar" value="{{ etiqueta.id }}"> Eliminar
+            </label>
+        </li>
+    {% endfor %}
+    </ul>
+    <h3>➕ Añadir nuevas etiquetas</h3>
+    <input type="text" name="etiqueta" placeholder="ej: personal, urgente" style="width: 400px; padding: 5px;"><br>
+    <button type="submit">Guardar cambios</button>
+</form>
+
+<form method="POST" action="/archivo/{{ archivo.id }}/editar_descripcion">
+  <textarea name="descripcion" rows="3" placeholder="Escribe una nota...">{{ archivo.descripcion }}</textarea>
+  <button type="submit">Guardar nota</button>
+</form>
+
+<br>
+<a href="/archivo/{{ archivo.id }}">← Volver al detalle</a>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block titulo %}🎧 Reproductor{% endblock %}
+
+{% block contenido %}
+<h1>🎧 Reproduciendo desde: {{ playlist.nombre }}</h1>
+
+{% if archivo %}
+  <h2>{{ archivo.nombre }}</h2>
+  <p><strong>Tipo:</strong> {{ archivo.tipo }} | <strong>Tamaño:</strong> {{ archivo.tamaño | filesizeformat }}</p>
+
+  {% if archivo.tipo.startswith('audio/') %}
+    <audio controls autoplay style="width: 100%; max-width: 600px;">
+      <source src="/media/{{ archivo.nombre }}" type="{{ archivo.tipo }}">
+      Tu navegador no soporta la reproducción de audio.
+    </audio>
+  {% elif archivo.tipo.startswith('video/') %}
+    <video controls autoplay width="640" height="360">
+      <source src="/media/{{ archivo.nombre }}" type="{{ archivo.tipo }}">
+      Tu navegador no soporta la reproducción de video.
+    </video>
+  {% else %}
+    <p>Este tipo de archivo no se puede reproducir directamente.</p>
+  {% endif %}
+
+  <div style="margin-top: 20px;">
+    <form action="{{ url_for('toggle_aleatorio') }}" method="POST" style="display:inline;">
+      <button type="submit" title="Mezclar playlist" style="background:none; border:none; font-size:1.2em;">
+        {% if estado.modo == 'aleatorio' %}🟢🔀{% else %}🔘🔀{% endif %}
+      </button>
+    </form>
+    <a href="{{ url_for('anterior_reproductor') }}">⏮️ Anterior</a>
+    |
+    <a href="{{ url_for('siguiente_reproductor') }}">⏭️ Siguiente</a>
+    |
+    <a href="{{ url_for('ver_playlist', id=playlist.id) }}">🔙 Ver playlist</a>
+    |
+    <a href="{{ url_for('mi_playlist') }}">🎵 Mis playlists</a>
+  </div>
+
+  <p style="margin-top: 10px;">
+    <strong>Modo:</strong> {{ estado.modo|capitalize }}
+    {% if estado.cola %}
+      | <strong>En cola:</strong> {{ estado.cola|length }} archivo{{ estado.cola|length > 1 and 's' or '' }}
+    {% endif %}
+  </p>
+{% else %}
+  <p>No hay archivo en reproducción.</p>
+{% endif %}
+{% endblock %}
