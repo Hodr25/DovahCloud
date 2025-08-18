@@ -95,8 +95,6 @@ def logout():
 @app.route('/privado', methods=['GET', 'POST'])
 @login_requerido
 def zona_privada():
-    clave_correcta = 'dragonborn'
-
     if request.method == 'POST':
         if request.form.get('clave') == clave_correcta:
             session['acceso_privado'] = True
@@ -362,16 +360,20 @@ def procesar_youtube():
     session['tipo_youtube'] = 'audio/mpeg' if formato == 'audio' else 'video/mp4'
     return redirect(url_for('subida_desde_youtube'))
 
-@app.route('/debug-thumb/<filename>')
-def debug_thumb(filename):
+@app.route('/debug-thumb/<privado>/<filename>')
+def debug_thumb(privado, filename):
     from flask import send_from_directory
-    return send_from_directory("uploads/DovahCloud/Tilok", filename)
+    folder = PRIVATE_UPLOAD_FOLDER if privado == '1' else UPLOAD_FOLDER
+    return send_from_directory(folder, filename)
 
 @app.context_processor
 def inyectar_funciones_utiles():
     def get_thumb_url(archivo):
-        folder = 'Tilok/' if archivo.es_privado else ''
-        return f"/media/{folder}thumb_{archivo.nombre}.jpg"
+        import os
+        folder = PRIVATE_UPLOAD_FOLDER if archivo.es_privado else UPLOAD_FOLDER
+        ruta_relativa = os.path.relpath(folder, start='media')
+        return f"/media/{ruta_relativa}thumb_{archivo.nombre}.jpg"
+    return dict(get_thumb_url=get_thumb_url)
 
     def etiquetas_visibles():
         if session.get('acceso_privado'):
@@ -1332,4 +1334,4 @@ def eliminar_bloc(id):
     return redirect(url_for('mis_blocs'))
 
 if __name__ == '__main__':
-    app.run(debug=True, host='192.168.1.102', port=5000)
+    app.run(debug=True, host='x.x.x.x', port=5000)
