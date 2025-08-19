@@ -31,6 +31,7 @@ acceso a colecciones locales de forma intuitiva y multiplataforma.
 git clone https://github.com/Hodr25/DovahCloud.git
 cd DovahCloud
 python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 python app.py
 ```
