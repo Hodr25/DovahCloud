@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 from PIL import Image
 from config import Config
+from flask_cors import CORS
 from models import Archivo, Etiqueta, Usuario, db, archivo_etiqueta, favoritos, Playlist, playlist_archivo, Bloc, bloc_compartido
 from utils import (
     guardar_miniatura_si_es_imagen,
@@ -24,14 +25,32 @@ import mimetypes
 import hashlib
 import yt_dlp
 import tempfile
+from api_routes import api_bp
 
 app = Flask(__name__, static_url_path="/media", static_folder="uploads/DovahCloud")
 app.secret_key = 'dragonborn'
 app.config.from_object(Config)
 
+CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": [
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                "http://localhost:3000",
+                "http://127.0.0.1:3000",
+            ],
+            "supports_credentials": True,
+        }
+    },
+)
+
 migrate = Migrate(app, db)
 
 db.init_app(app)
+
+app.register_blueprint(api_bp)
 
 # Crear tablas al iniciar si no existen
 with app.app_context():
