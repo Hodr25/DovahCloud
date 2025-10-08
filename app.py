@@ -1352,5 +1352,6 @@ def eliminar_bloc(id):
     flash("🗑️ Bloc eliminado con éxito.")
     return redirect(url_for('mis_blocs'))
 
-if __name__ == '__main__':
-    app.run(debug=True, host='x.x.x.x', port=5000)
+if __name__ == "__main__":
+    # Ejecuta Flask directamente con python app.py
+    app.run(host="0.0.0.0", port=5000, debug=True)
