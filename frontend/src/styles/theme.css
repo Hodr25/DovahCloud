@@ -1,0 +1,89 @@
+:root {
+  --color-background: #120626;
+  --color-background-secondary: #1b0d36;
+  --color-surface: rgba(34, 12, 62, 0.8);
+  --color-surface-solid: #241043;
+  --color-text-primary: #f8f5ff;
+  --color-text-secondary: #b6a6d6;
+  --color-accent: #7b4dff;
+  --color-accent-soft: #a37bff;
+  --color-positive: #3dd9b5;
+  --color-warning: #ffb965;
+  --shadow-soft: 0 18px 30px rgba(31, 8, 69, 0.4);
+  --shadow-strong: 0 26px 60px rgba(14, 3, 33, 0.45);
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+  --transition-fast: 180ms ease;
+  --transition-base: 280ms ease;
+}
+
+.glass-panel {
+  backdrop-filter: blur(22px);
+  background: var(--color-surface);
+  border: 1px solid rgba(123, 77, 255, 0.12);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.primary-button {
+  background: linear-gradient(135deg, var(--color-accent), #5829ff);
+  border: none;
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+  box-shadow: 0 10px 28px rgba(89, 33, 212, 0.4);
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.ghost-button {
+  background: transparent;
+  border: 1px solid rgba(163, 123, 255, 0.35);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.ghost-button:hover {
+  background: rgba(163, 123, 255, 0.12);
+  border-color: rgba(163, 123, 255, 0.55);
+  color: var(--color-text-primary);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.scroll-y {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(163, 123, 255, 0.35) transparent;
+}
+
+.scroll-y::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-y::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-y::-webkit-scrollbar-thumb {
+  background: rgba(163, 123, 255, 0.35);
+  border-radius: 20px;
+}
+
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(123, 77, 255, 0.4) 20%, rgba(123, 77, 255, 0.4) 80%, transparent 100%);
+  margin: 1.4rem 0;
+}
