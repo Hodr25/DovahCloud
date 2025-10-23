@@ -81,7 +81,7 @@ Este proyecto está bajo la licencia MIT. Libre para usar, modificar y compartir
 
 ## 📬 Contacto
 
-Creado por Hodr25
+Creado por Hodr25 y cadugi
 GitHub: @hodr25
-
+GitHub: @cadugi
 ---
